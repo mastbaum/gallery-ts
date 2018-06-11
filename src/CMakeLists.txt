@@ -79,6 +79,12 @@ target_link_libraries(
   ${ROOT_LIBRARIES}
 )
 
+add_library(ts_Covariance SHARED Covariance.cxx)
+target_link_libraries(
+  ts_Event
+  ${ROOT_LIBRARIES}
+)
+
 file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib)
 add_custom_command(TARGET ts_Event POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -99,8 +105,17 @@ target_link_libraries(
   ${LARSIM_BASE_DICT}
 )
 
+add_executable(covariance CovarianceMain.cxx)
+target_link_libraries(
+  covariance
+  ts_Covariance
+  ts_Event
+)
+
 install(TARGETS ts_Event DESTINATION lib)
 install(TARGETS ts_Processor DESTINATION lib)
 install(TARGETS ts_Selection DESTINATION lib)
+install(TARGETS ts_Covariance DESTINATION lib)
 install(TARGETS selection DESTINATION bin)
+install(TARGETS covariance DESTINATION bin)
 

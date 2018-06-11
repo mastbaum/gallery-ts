@@ -130,6 +130,15 @@ console:
 This will produce a plot of the primary lepton energies for all neutrino
 interactions.
 
+### Covariance Matrices
+
+A utility (`bin/covariance`) is provided for computing covariance matrices
+given selected samples. This is implemented in the `Covariance` class and
+`bin/CovarianceMain.cxx`, and currently makes hard-coded assumptions about
+the selections. Until this is improved, modify the covariance calculator to
+suit your analysis needs. The areas that will likely need changes are noted
+with comments.
+
 Authors
 -------
 This package is a simplified subset of the `sbncode` analysis framework,
