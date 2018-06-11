@@ -1,0 +1,8 @@
+{
+  "OutputFile": "output_TruthSelection_1e1p.root",
+  "MCWeightTag": "mcweight",
+  "TruthSelection": {
+    "SelectionType": "1e1p"
+  }
+}
+
