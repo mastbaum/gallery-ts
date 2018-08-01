@@ -31,8 +31,10 @@ link_directories(
 
 ROOT_GENERATE_DICTIONARY(ts_eventdict Event.hh LINKDEF linkdef.h)
 
-find_library(LARSIM_BASE_LIBRARY larsim_EventWeight_Base HINTS $ENV{LARSIM_LIB})
-find_library(LARSIM_BASE_DICT larsim_EventWeight_Base_dict HINTS $ENV{LARSIM_LIB})
+# Set for uboonecode v06_26_01_xx, with EventWeight included
+include_directories($ENV{UBOONECODE_INC})
+find_library(LARSIM_BASE_LIBRARY EventWeight HINTS $ENV{UBOONECODE_LIB})
+find_library(LARSIM_BASE_DICT uboone_EventWeight_dict HINTS $ENV{UBOONECODE_LIB})
 
 add_library(ts_Event ts_eventdict.cxx)
 target_link_libraries(
@@ -46,14 +48,11 @@ add_library(ts_Processor SHARED ProcessorBase.cxx ProcessorBlock.cxx Config.cxx)
 target_link_libraries(
   ts_Processor
   ts_Event
-  canvas
   cetlib
   gallery
   nusimdata_SimulationBase
   larcoreobj_SummaryData
   lardataobj_RecoBase
-  larsim_EventWeight_Base
-  larsim_EventWeight_Base_dict
   ${LARSIM_BASE_LIBRARY}
   ${LARSIM_BASE_DICT}
   ${ROOT_LIBRARIES}
@@ -63,14 +62,11 @@ add_library(ts_Selection SHARED TruthSelection.cxx Selections.cxx)
 target_link_libraries(
   ts_Processor
   ts_Event
-  canvas
   cetlib
   gallery
   nusimdata_SimulationBase
   larcoreobj_SummaryData
   lardataobj_RecoBase
-  larsim_EventWeight_Base
-  larsim_EventWeight_Base_dict
   MF_MessageLogger
   MF_Utilities
   ${CLHEP_LIB}
@@ -86,14 +82,13 @@ target_link_libraries(
 )
 
 file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib)
-add_custom_command(TARGET ts_Event POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different
-  libts_eventdict_rdict.pcm ${CMAKE_INSTALL_PREFIX}/lib)
+#add_custom_command(TARGET ts_Event POST_BUILD
+#  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#  libts_eventdict_rdict.pcm ${CMAKE_INSTALL_PREFIX}/lib)
 
 add_executable(selection Main.cxx)
 target_link_libraries(
   selection
-  canvas
   ts_Processor
   ts_Event
   ts_Selection

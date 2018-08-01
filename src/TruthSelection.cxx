@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <TH2D.h>
+#include <TTree.h>
 #include <json/json.h>
 #include "gallery/ValidHandle.h"
 #include "canvas/Utilities/InputTag.h"

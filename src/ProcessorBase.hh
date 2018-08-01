@@ -11,11 +11,11 @@
 
 #include <string>
 #include <vector>
+#include <TTree.h>
 #include "gallery/Event.h"
 
 class TBranch;
 class TFile;
-class TTree;
 class Event;
 
 namespace Json {

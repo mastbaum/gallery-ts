@@ -24,19 +24,17 @@ The build process is managed by [CMake](https://cmake.org). A number of
 dependencies are required to read art ROOT files, which are most easily
 configured using [ups](https://cdcvs.fnal.gov/redmine/projects/ups/wiki).
 
-For example, to configure an environment for reading SBND or MicroBooNE
+For example, to configure an environment for reading MicroBooNE
 files on a host with CVMFS access:
     
-    source /cvmfs/sbnd.opensciencegrid.org/products/sbnd/setup_sbnd.sh
     source /cvmfs/uboone.opensciencegrid.org/products/setup_uboone.sh
-    source /cvmfs/icarus.opensciencegrid.org/products/icarus/setup_icarus.sh
 
-Then set up your favorite code releases, e.g.:
+Then set up your favorite MCC8 release, e.g.:
 
     source /cvmfs/uboone.opensciencegrid.org/products/setup_uboone.sh
-    setup uboonecode v06_79_00 -q e15:prof
-    setup gallery v1_07_02 -q e15:prof
-    setup cmake v3_10_1
+    setup uboonecode v06_26_01_20 -q e10:prof
+    setup gallery v1_03_13 -q e10:prof:nu
+    setup cmake
 
 To build the software:
 
