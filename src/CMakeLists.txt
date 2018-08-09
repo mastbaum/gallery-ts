@@ -27,6 +27,7 @@ link_directories(
   $ENV{JSONCPP_LIB}
   $ENV{CLHEP_LIB_DIR}
   $ENV{MESSAGEFACILITY_LIB}
+  $ENV{BOOST_LIB}
 )
 
 ROOT_GENERATE_DICTIONARY(ts_eventdict Event.hh LINKDEF linkdef.h)
