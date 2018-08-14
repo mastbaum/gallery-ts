@@ -123,7 +123,7 @@ console:
 
     root [0] .L $TS_LIB_DIR/libts_Event.so
     root [1] TFile f("output.root")
-    root [2] events->Draw("interactions.lepton.energy")
+    root [2] tsana->Draw("interactions.lepton.energy")
 
 This will produce a plot of the primary lepton energies for all neutrino
 interactions.
