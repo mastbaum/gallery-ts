@@ -52,14 +52,23 @@ protected:
 
   /// Configuration parameters
   art::InputTag fTruthTag;  //!< art tag for MCTruth information
+  art::InputTag fFluxTag;  //!< art tag for MCFlux information
   art::InputTag fTrackTag;  //!< art tag for MCTrack information
   art::InputTag fShowerTag;  //!< art tag for MCShower information
   std::string fSelectionType;  //!< Selection type, from configuration parameter
 
   /// Custom data branches
   double fWeight;  //!< Efficiency weight
-  double fRecoEnergy;  //!< Reconstructed neutrino energy
   int fRecoPDG;  //!< Selection PDG
+
+  // SBNfit branches
+  int fRun;  //!< Run ID
+  int fSubrun;  //!< Subrun ID
+  int fEventID;  //!< Event ID
+  double fRecoEnergy;  //!< Reconstructed neutrino energy
+  double fNuEnergy;  //!< True neutrino energy
+  double fNuBaseline;  //!< True neutrino baseline
+  std::map<std::string, std::vector<double> > fWeights;  //!< Event weights
 };
 
   }  // namespace TruthSelection

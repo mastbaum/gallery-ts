@@ -213,7 +213,7 @@ void Covariance::analyze() {
     for (long k=0; k<_tree->GetEntries(); k++) {
       _tree->GetEntry(k);
 
-      if (event->ninteractions == 0) {
+      if (event->interactions.empty()) {
         continue;
       }
 

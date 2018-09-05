@@ -26,6 +26,12 @@ void ProcessorBase::FillTree() {
 }
 
 
+void ProcessorBase::EventCleanup() {
+  fEvent->metadata.Init();
+  fEvent->interactions.clear();
+}
+
+
 void ProcessorBase::Initialize(char* config) {
   Json::Value* cfg = LoadConfig(config);
   Initialize(cfg);
@@ -73,7 +79,6 @@ void ProcessorBase::BuildEventTree(gallery::Event& ev) {
   assert(hasTruths);
 
   // Get MCEventWeight information
-  //gallery::Handle<std::vector<std::map<std::string,std::vector<double> > > > wgh;
   gallery::Handle<std::vector<::evwgh::MCEventWeight> > wgh;
   bool hasWeights = ev.getByLabel(fWeightTag, wgh);
 
@@ -84,19 +89,12 @@ void ProcessorBase::BuildEventTree(gallery::Event& ev) {
     assert(wgh->size() == mctruths->size());
   }
 
-  fTree->GetEntry(fEventIndex);
-
-  fEvent->ninteractions = std::min(Event::kMaxInteractions, mctruths->size());
-
-  if (mctruths->size() > Event::kMaxInteractions) {
-    std::cerr << "Too many interactions in event (" << mctruths->size() << "), "
-              << "keeping maximum number (" << Event::kMaxInteractions << ")"
-              << std::endl;
-  }
+  //fTree->GetEntry(fEventIndex);
 
   // Populate event tree
-  for (size_t i=0; i<fEvent->ninteractions; i++) {
-    Event::Interaction& interaction = fEvent->interactions[i];
+  for (size_t i=0; i<mctruths->size(); i++) {
+    Event::Interaction interaction;
+
     auto const& mctruth = mctruths->at(i);
 
     // Weights
@@ -124,18 +122,8 @@ void ProcessorBase::BuildEventTree(gallery::Event& ev) {
     interaction.lepton.momentum = lepton.Momentum(0).Vect();
 
     // Final state system
-    interaction.nfinalstate = \
-      std::min((int)Event::kMaxFinalState, mctruth.NParticles());
-
-    if (mctruth.NParticles() > Event::kMaxFinalState) {
-      std::cerr << "Too many final state particles (" << mctruth.NParticles()
-                << "), "
-                << "keeping maximum number (" << Event::kMaxFinalState << ")"
-                << std::endl;
-    }
-
-    for (int iparticle=0; iparticle<interaction.nfinalstate; iparticle++) {
-      Event::FinalStateParticle& fsp = interaction.finalstate[iparticle];
+    for (int iparticle=0; iparticle<mctruth.NParticles(); iparticle++) {
+      Event::FinalStateParticle fsp;
       const simb::MCParticle& particle = mctruth.GetParticle(iparticle);
 
       if (particle.Process() != "primary") {
@@ -145,7 +133,11 @@ void ProcessorBase::BuildEventTree(gallery::Event& ev) {
       fsp.pdg = particle.PdgCode();
       fsp.energy = particle.Momentum(0).Energy();
       fsp.momentum = particle.Momentum(0).Vect();
+
+      interaction.finalstate.push_back(fsp);
     }
+
+    fEvent->interactions.push_back(interaction);
   }
 }
 

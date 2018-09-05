@@ -20,7 +20,7 @@
 #include "canvas/Persistency/Common/Wrapper.h"
 
 /** art Wrapper instance to help the build. */
-art::Wrapper<std::vector<std::map<std::string, std::vector<double> > > > a;
+extern art::Wrapper<std::vector<std::map<std::string, std::vector<double> > > > a;
 
 /**
  * \class Event
@@ -28,12 +28,6 @@ art::Wrapper<std::vector<std::map<std::string, std::vector<double> > > > a;
  */
 class Event {
 public:
-  /** Maximum number of interactions. */
-  static const size_t kMaxInteractions = 3;
-
-  /** Maximum number of final state particles. */
-  static const size_t kMaxFinalState = 50;
-
   /**
    * \class Event::Metadata
    * \brief Event-level information
@@ -41,6 +35,12 @@ public:
   class Metadata {
   public:
     Metadata() : run(-999), subrun(-999), eventID(-999) {}
+    void Init() {
+      run = -999;
+      subrun = -999;
+      eventID = -999;
+    }
+
     int run;  //!< Run ID
     int subrun;  //!< Subrun ID
     int eventID;  //!< Event ID
@@ -89,14 +89,13 @@ public:
   class Interaction {
   public:
     /** Constructor. */
-    Interaction() : nfinalstate(0) {}
+    Interaction() {}
 
     Neutrino neutrino;  //!< The neutrino
     FinalStateParticle lepton;  //!< The primary final state lepton
-    size_t nfinalstate;  //!< Number of other final state particles
 
     /** The other final state particles. */
-    FinalStateParticle finalstate[kMaxFinalState];
+    std::vector<FinalStateParticle> finalstate;
 
     /**
      * Event weights.
@@ -108,15 +107,11 @@ public:
   };
 
   /** Constructor. */
-  Event() : ninteractions(0) {}
+  Event() {}
 
   Metadata metadata;  //!< Event metadata
-  size_t ninteractions;  //!< Number of interactions
-  Interaction interactions[kMaxInteractions];  //!< All interactions
+  std::vector<Interaction> interactions;  //!< All interactions
 };
-
-const size_t Event::kMaxInteractions;
-const size_t Event::kMaxFinalState;
 
 #endif  // __ts_core_Event__
 
